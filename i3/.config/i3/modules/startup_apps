@@ -1,0 +1,31 @@
+# Initial workspace - monitor mappings
+workspace $ws1 output DP-0
+workspace $ws2 output primary
+workspace $ws3 output HDMI-0
+workspace $ws4 output DP-0
+workspace $ws5 output primary
+workspace $ws6 output HDMI-0
+workspace $ws7 output DP-0
+workspace $ws8 output primary
+workspace $ws9 output HDMI-0
+
+mouse_warping none
+
+assign [class="tidal-hifi"] 3
+assign [class="discord"] 3
+
+no_focus [class="tidal-hifi"] 
+no_focus [class="discord"] 
+
+# Background Apps
+exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id /usr/bin/dunst
+exec_always --no-startup-id picom
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh 
+
+#################
+# Windowed apps #
+#################
+
+exec --no-startup-id discord
+exec --no-startup-id tidal-hifi

@@ -1,0 +1,28 @@
+##########
+# COLORS #
+##########
+
+
+set_from_resource $bg         background      #1E1E2E
+set_from_resource $fg 		  foreground      #D9E0EE    
+set_from_resource $gray1      color0          #6E6C7E
+set_from_resource $gray2      color8          #988BA2
+set_from_resource $red        color1          #F28FAD
+set_from_resource $green      color2          #ABE9B3
+set_from_resource $yellow     color3          #FAE3B0
+set_from_resource $blue       color4          #96CDFB
+set_from_resource $maguve     color5          #DDB6F2
+set_from_resource $pink       color6          #F5C2E7
+set_from_resource $white1     color7          #C3BAC6
+set_from_resource $white2     color15         #D9E0EE
+
+# class					border		backgr.		text	indicator	child_border
+client.focused			$fg			$bg 		$white1	$fg			$bg
+client.focused_inactive	$fg			$bg			$fg		$fg	  		$bg
+client.unfocused		$fg			$bg			$fg		$fg	  		$bg
+client.urgent			$maguve 	$maguve		$white2	$fg	  		$bg
+client.placeholder		$gray1		$gray2		$white2	#000000	  	#0C0C0C
+
+gaps inner 5
+gaps outer 5
+default_border pixel

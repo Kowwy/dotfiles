@@ -14,3 +14,4 @@ opt.cursorline = true
 opt.cursorcolumn = true
 opt.splitbelow = true
 opt.splitright = true
+opt.signcolumn = "auto:1-4"

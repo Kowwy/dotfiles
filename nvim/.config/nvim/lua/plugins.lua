@@ -11,7 +11,12 @@ end
 
 return require('packer').startup(function()
 	use 'wbthomason/packer.nvim'
-	use {'nvim-treesitter/nvim-treesitter', config = get_setup('treesitter'), run = ':TSUpdate'}
+	use {
+		'nvim-treesitter/nvim-treesitter', 
+		config = get_setup('treesitter'), 
+		run = ':TSUpdate'
+	}
+	use 'p00f/nvim-ts-rainbow'
 	use 'kyazdani42/nvim-web-devicons'
 	use {
 		'nvim-telescope/telescope.nvim',
@@ -28,6 +33,37 @@ return require('packer').startup(function()
 		config = get_setup('catppuccin')
 	}
 	use 'nathom/filetype.nvim'
+	use {
+		'alvarosevilla95/luatab.nvim',
+		requires = 'kyazdani42/nvim-web-devicons',
+		config = get_setup('luatab')
+	}
+	use 'neovim/nvim-lspconfig'
+	use {
+		'williamboman/nvim-lsp-installer',
+		config = get_setup('lsp-installer')
+	}
+	use {
+		'folke/which-key.nvim',
+		config = get_setup('which-key')
+	}
+	use {
+		'windwp/nvim-autopairs',
+		after = 'nvim-cmp'
+	}
+	use {
+		'hrsh7th/nvim-cmp',
+		requires = {
+			'hrsh7th/cmp-cmdline',
+			'hrsh7th/cmp-path',
+			'hrsh7th/cmp-buffer',
+			'hrsh7th/cmp-nvim-lsp',
+			'hrsh7th/vim-vsnip',
+			'hrsh7th/cmp-vsnip'
+		},
+		config = get_setup('autocomplete')
+	}
+	use 'onsails/lspkind-nvim'
 
 
-	end)
+end)

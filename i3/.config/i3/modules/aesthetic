@@ -25,4 +25,5 @@ client.placeholder		$gray1		$gray2		$white2	#000000	  	#0C0C0C
 
 gaps inner 5
 gaps outer 5
+smart_gaps on
 default_border pixel

@@ -9,7 +9,7 @@ function get_setup(name)
     return string.format('require("setup/%s")', name)
 end
 
-return require('packer').startup(function()
+return require('packer').startup(function(use)
 	use 'wbthomason/packer.nvim'
 	use {
 		'nvim-treesitter/nvim-treesitter', 
@@ -38,7 +38,10 @@ return require('packer').startup(function()
 		requires = 'kyazdani42/nvim-web-devicons',
 		config = get_setup('luatab')
 	}
-	use 'neovim/nvim-lspconfig'
+	use {
+		'neovim/nvim-lspconfig',
+		config = get_setup('lspconfig')
+	}
 	use {
 		'williamboman/nvim-lsp-installer',
 		config = get_setup('lsp-installer')
@@ -49,7 +52,8 @@ return require('packer').startup(function()
 	}
 	use {
 		'windwp/nvim-autopairs',
-		after = 'nvim-cmp'
+		config = get_setup('autopairs')
+--		after = 'nvim-cmp'
 	}
 	use {
 		'hrsh7th/nvim-cmp',
@@ -58,6 +62,7 @@ return require('packer').startup(function()
 			'hrsh7th/cmp-path',
 			'hrsh7th/cmp-buffer',
 			'hrsh7th/cmp-nvim-lsp',
+			'hrsh7th/cmp-nvim-lsp-signature-help',
 			'hrsh7th/vim-vsnip',
 			'hrsh7th/cmp-vsnip'
 		},

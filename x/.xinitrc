@@ -50,5 +50,5 @@ fi
 
 #./.screenlayout/desktop.sh &
 nvidia-settings --load-config-only &
-feh --no-fehbg --bg-fill /home/corey/usr/img/wallpapers/minimalistic/magenta-cat.png /home/corey/usr/img/wallpapers/solids/magenta.png /home/corey/usr/img/wallpapers/solids/magenta.png &
+~/.fehbg &
 exec i3

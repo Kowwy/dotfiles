@@ -1,5 +1,9 @@
 local cmp = require('cmp')
 local lspkind = require('lspkind')
+local cmp_buffer = require('cmp_buffer')
+
+
+vim.opt.completeopt = "menu,menuone,noselect"
 
 cmp.setup({
 	snippet = {
@@ -18,25 +22,37 @@ cmp.setup({
 		}),
 		['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     },
-	completion = {
-		completeopt = 'menu,menuone,noinsert',
-	},
 	sources = cmp.config.sources({
 		{ name = 'nvim_lsp' },
 		{ name = 'vsnip' },
-		{ name = 'buffer' },
+		{
+			name = 'buffer',
+			option = {
+				get_bufnrs = function ()
+					return vim.api.nvim_list_bufs()
+				end
+			}
+		},
 		{ name = 'path' },
+		{ name = 'nvim_lsp_signature_help' }
 	}),
+
+	sorting = {
+		comparators = {
+			function (...) return cmp_buffer:compare_locality(...) end,
+		}
+	},
 
 	formatting = {
 		format = lspkind.cmp_format({
-			mode = 'symbol',
+			mode = 'text_symbol',
 			maxwidth = 50,
 			before = function (entry, vim_item)
 				return vim_item
 			end
 		})
-	}
+	},
 })
+
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())

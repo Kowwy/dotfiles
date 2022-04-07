@@ -5,8 +5,6 @@ opt.ignorecase = true
 opt.linebreak = true
 opt.termguicolors = true
 opt.ruler = true
-opt.tabstop = 4
-opt.shiftwidth = 4
 vim.cmd([[colorscheme catppuccin]])
 opt.relativenumber = true
 opt.number = true
@@ -15,3 +13,4 @@ opt.cursorcolumn = true
 opt.splitbelow = true
 opt.splitright = true
 opt.signcolumn = "auto:1-4"
+opt.updatetime = 250

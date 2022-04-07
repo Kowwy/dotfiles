@@ -16,12 +16,23 @@ set_from_resource $pink       color6          #F5C2E7
 set_from_resource $white1     color7          #C3BAC6
 set_from_resource $white2     color15         #D9E0EE
 
-# class					border		backgr.		text	indicator	child_border
-client.focused			$fg			$bg 		$white1	$fg			$bg
-client.focused_inactive	$fg			$bg			$fg		$fg	  		$bg
-client.unfocused		$fg			$bg			$fg		$fg	  		$bg
-client.urgent			$maguve 	$maguve		$white2	$fg	  		$bg
-client.placeholder		$gray1		$gray2		$white2	#000000	  	#0C0C0C
+## class					border		backgr.		text	indicator	child_border
+#client.focused			$fg			$bg 		$white1	$fg			$bg
+#client.focused_inactive	$fg			$bg			$fg		$fg	  		$bg
+#client.unfocused		$fg			$bg			$fg		$fg	  		$bg
+#client.urgent			$maguve 	$maguve		$white2	$fg	  		$bg
+#client.placeholder		$gray1		$gray2		$white2	#000000	  	#0C0C0C
+
+
+# class                 border  bground text    indicator child_border
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+
+client.background       #F8F8F2
+
 
 gaps inner 5
 gaps outer 5

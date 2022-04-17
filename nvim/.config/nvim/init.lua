@@ -206,7 +206,7 @@ vim.api.nvim_set_keymap('n', '<leader>?', "<cmd>lua require('telescope.builtin')
   --Parsers must be installed manually via :TSInstall
 
 require('nvim-treesitter.configs').setup {
-	ensure_installed = "maintained",
+	ensure_installed = "all",
 	sync_install = false,
 	highlight = {
 	enable = true, -- false will disable the whole extension
@@ -272,7 +272,7 @@ vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<
   --LSP settings
 local lspconfig = require 'lspconfig'
 local on_attach = function(_, bufnr)
-local opts = { noremap = true, silent = true }
+	local opts = { noremap = true, silent = true }
 	vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 	vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
 	vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)

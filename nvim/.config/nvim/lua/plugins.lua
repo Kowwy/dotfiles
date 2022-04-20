@@ -12,36 +12,45 @@ vim.cmd([[
 	augroup end
 ]])
 
+function Get_Setup(name)
+	return string.format('require("setup/%s")', name)
+end
+
 require("packer").startup(function(use)
 	use("wbthomason/packer.nvim") -- Package manager
 	use("tpope/vim-fugitive") -- Git commands in nvim
 	use("tpope/vim-rhubarb") -- Fugitive-companion to interact with github
 	use("nathom/filetype.nvim") -- replacement for filetype.vim, 175x faster
-	use("windwp/nvim-autopairs")
+	use({ "windwp/nvim-autopairs", config = Get_Setup("autopairs") })
 	use("rafamadriz/friendly-snippets")
 	-- UI to select things (files, grep results, open buffers...)
 	use({ "nvim-telescope/telescope.nvim", requires = { "nvim-lua/plenary.nvim" } })
-	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make", config = Get_Setup("telescope") })
 	use("mjlbach/onedark.nvim") -- Theme inspired by Atom
-	use({ "nvim-lualine/lualine.nvim", requires = { "kyazdani42/nvim-web-devicons", opt = true } }) -- Fancier statusline
-	use({ "alvarosevilla95/luatab.nvim", requires = "kyazdani42/nvim-web-devicons" })
-	use("folke/which-key.nvim")
-	use("jose-elias-alvarez/null-ls.nvim")
+	use({
+		"nvim-lualine/lualine.nvim",
+		requires = { "kyazdani42/nvim-web-devicons", opt = true },
+		config = Get_Setup("lualine"),
+	}) -- Fancier statusline
+	use({ "alvarosevilla95/luatab.nvim", requires = "kyazdani42/nvim-web-devicons", config = Get_Setup("luatab") })
+	use({ "folke/which-key.nvim", config = Get_Setup("whichkey") })
+	use({ "jose-elias-alvarez/null-ls.nvim", config = Get_Setup("null-ls") })
 
 	-- Add indentation guides even on blank lines
-	use("lukas-reineke/indent-blankline.nvim")
+	use({ "lukas-reineke/indent-blankline.nvim", config = Get_Setup("indent_blankline") })
 	-- Add git related info in the signs columns and popups
-	use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
+	use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" }, config = Get_Setup("gitsigns") })
 	-- Highlight, edit, and navigate code using a fast incremental parsing library
-	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
+	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = Get_Setup("treesitter") })
 	use("p00f/nvim-ts-rainbow")
 	use("kyazdani42/nvim-web-devicons")
 	-- Additional textobjects for treesitter
 	use("nvim-treesitter/nvim-treesitter-textobjects")
-	use("neovim/nvim-lspconfig") -- Collection of configurations for built-in LSP client
+	use({ "neovim/nvim-lspconfig", config = Get_Setup("lspconfig") }) -- Collection of configurations for built-in LSP client
 	use({
 		"catppuccin/nvim",
 		as = "catppuccin",
+		config = Get_Setup("catppuccin"),
 	})
 	use({
 		"dracula/vim",
@@ -58,10 +67,12 @@ require("packer").startup(function(use)
 			"hrsh7th/cmp-nvim-lsp-signature-help",
 			"ray-x/cmp-treesitter",
 		},
+		config = Get_Setup("cmp"),
 	})
 	use("onsails/lspkind-nvim")
 	use("saadparwaiz1/cmp_luasnip")
 	use("L3MON4D3/LuaSnip") -- Snippets plugin
+	use({ "nvim-neorg/neorg", config = Get_Setup("neorg"), requires = "nvim-lua/plenary.nvim" })
 end)
 
 --Set highlight on search
@@ -109,34 +120,6 @@ vim.diagnostic.config({
 	virtual_text = false,
 })
 
---Set statusbar
-require("lualine").setup({
-	options = {
-		icons_enabled = true,
-		theme = "auto",
-		component_separators = { left = "", right = "" },
-		section_separators = { left = "", right = "" },
-		disabled_filetypes = {},
-		always_divide_middle = true,
-	},
-	sections = {
-		lualine_a = { "mode" },
-		lualine_b = { "branch", "diff", "diagnostics" },
-		lualine_c = { "filename" },
-		lualine_x = { "encoding", "fileformat", "filetype" },
-		lualine_y = { "progress" },
-		lualine_z = { "location" },
-	},
-	inactive_sections = {
-		lualine_a = {},
-		lualine_b = {},
-		lualine_c = { "filename" },
-		lualine_x = { "location" },
-		lualine_y = {},
-		lualine_z = {},
-	},
-})
-
 vim.g.mapleader = "\\"
 vim.g.maplocalleader = "\\"
 
@@ -152,38 +135,7 @@ vim.cmd([[
 	augroup end
 ]])
 
-require("indent_blankline").setup({
-	space_char_blankline = " ",
-	show_current_context = true,
-	show_current_context_start = true,
-})
-
---Map blankline
-vim.g.indent_blankline_char = "┊"
-vim.g.indent_blankline_filetype_exclude = { "help", "packer" }
-vim.g.indent_blankline_buftype_exclude = { "terminal", "nofile" }
-vim.g.indent_blankline_show_trailing_blankline_indent = false
-
 --Gitsigns
-require("gitsigns").setup({
-	signs = {
-		add = { text = "+" },
-		change = { text = "~" },
-		delete = { text = "_" },
-		topdelete = { text = "‾" },
-		changedelete = { text = "~" },
-	},
-})
-
---Telescope
-require("telescope").setup({
-	defaults = {
-		mappings = {},
-	},
-})
-
---Enable telescope fzf native
-require("telescope").load_extension("fzf")
 
 --Add leader shortcuts
 --vim.api.nvim_set_keymap()
@@ -242,297 +194,8 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true }
 )
 
---Treesitter configuration
---Parsers must be installed manually via :TSInstall
-
-require("nvim-treesitter.configs").setup({
-	ensure_installed = "all",
-	sync_install = false,
-	highlight = {
-		enable = true, -- false will disable the whole extension
-	},
-	--  incremental_selection = {
-	--    enable = true,
-	--    keymaps = {
-	--      init_selection = 'gnn',
-	--      node_incremental = 'grn',
-	--      scope_incremental = 'grc',
-	--      node_decremental = 'grm',
-	--    },
-	--  },
-	indent = {
-		enable = true,
-	},
-	rainbow = {
-		enable = true,
-		extended_mode = true,
-		max_file_lines = nil,
-	},
-	textobjects = {
-		select = {
-			enable = true,
-			lookahead = true, --Automatically jump forward to textobj, similar to targets.vim
-			keymaps = {
-				--You can use the capture groups defined in textobjects.scm
-				["af"] = "@function.outer",
-				["if"] = "@function.inner",
-				["ac"] = "@class.outer",
-				["ic"] = "@class.inner",
-			},
-		},
-		move = {
-			enable = true,
-			set_jumps = true, -- whether to set jumps in the jumplist
-			goto_next_start = {
-				["]m"] = "@function.outer",
-				["]]"] = "@class.outer",
-			},
-			goto_next_end = {
-				["]M"] = "@function.outer",
-				["]["] = "@class.outer",
-			},
-			goto_previous_start = {
-				["[m"] = "@function.outer",
-				["[["] = "@class.outer",
-			},
-			goto_previous_end = {
-				["[M"] = "@function.outer",
-				["[]"] = "@class.outer",
-			},
-		},
-	},
-})
-
 --Diagnostic keymaps
 vim.api.nvim_set_keymap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", { noremap = true, silent = true })
-
---LSP settings
-local lspconfig = require("lspconfig")
-local on_attach = function(_, bufnr)
-	local opts = { noremap = true, silent = true }
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(
-		bufnr,
-		"n",
-		"<leader>wl",
-		"<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
-		opts
-	)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(
-		bufnr,
-		"n",
-		"<leader>so",
-		[[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]],
-		opts
-	)
-	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
-	_.resolved_capabilities.document_formatting = false
-	_.resolved_capabilities.document_range_formatting = false
-end
-
---nvim-cmp supports additional completion capabilities
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
-
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-for type, icon in pairs(signs) do
-	local hl = "DiagnosticSign" .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
---Enable the following language servers
-local servers = { "clangd", "rust_analyzer", "pyright", "tsserver" }
-for _, lsp in ipairs(servers) do
-	lspconfig[lsp].setup({
-		on_attach = on_attach,
-		capabilities = capabilities,
-	})
-end
-
---require('lspconfig').tsserver.setup({
---	on_attach = function(client)
---		client.resolved_capabilities.document_formatting = false
---		client.resolved_capabilities.document_range_formatting = false
---	end,
---})
-
---Example custom server
---Make runtime files discoverable to the server
-local runtime_path = vim.split(package.path, ";")
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
-
-lspconfig.sumneko_lua.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
-	settings = {
-		Lua = {
-			runtime = {
-				--Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-				version = "LuaJIT",
-				--Setup your lua path
-				path = runtime_path,
-			},
-			diagnostics = {
-				--Get the language server to recognize the `vim` global
-				globals = { "vim" },
-			},
-			workspace = {
-				--Make the server aware of Neovim runtime files
-				library = vim.api.nvim_get_runtime_file("", true),
-			},
-			--Do not send telemetry data containing a randomized but unique identifier
-			telemetry = {
-				enable = false,
-			},
-		},
-	},
-})
-
---luasnip setup
-local luasnip = require("luasnip")
-require("luasnip.loaders.from_vscode").lazy_load()
-
---nvim-cmp setup
-local lspkind = require("lspkind")
-local cmp_buffer = require("cmp_buffer")
-local cmp = require("cmp")
-
-cmp.setup({
-	snippet = {
-		expand = function(args)
-			luasnip.lsp_expand(args.body)
-		end,
-	},
-	mapping = {
-		["<C-p>"] = cmp.mapping.select_prev_item(),
-		["<C-n>"] = cmp.mapping.select_next_item(),
-		["<C-b>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<C-e>"] = cmp.mapping({
-			i = cmp.mapping.abort(),
-			c = cmp.mapping.close(),
-		}),
-		["<CR>"] = cmp.mapping.confirm({ select = false }),
-		["<Tab>"] = function(fallback)
-			if cmp.visible() then
-				cmp.select_next_item()
-			elseif luasnip.expand_or_jumpable() then
-				luasnip.expand_or_jump()
-			else
-				fallback()
-			end
-		end,
-		["<S-Tab>"] = function(fallback)
-			if cmp.visible() then
-				cmp.select_prev_item()
-			elseif luasnip.jumpable(-1) then
-				luasnip.jump(-1)
-			else
-				fallback()
-			end
-		end,
-	},
-	formatting = {
-		format = lspkind.cmp_format({
-			mode = "text_symbol",
-			maxwidth = 50,
-			before = function(entry, vim_item)
-				return vim_item
-			end,
-			dup = 0,
-			menu = {
-				buffer = "[Buffer]",
-				nvim_lsp = "[LSP]",
-				luasnip = "[LuaSnip]",
-				nvim_lua = "[Lua]",
-				treesitter = "[TS]",
-				latex_symbols = "[Latex]",
-			},
-		}),
-	},
-	sorting = {
-		--comparators = {
-		--	function (...) return cmp_buffer:compare_locality(...) end,
-		--	}
-	},
-	sources = {
-		{ name = "luasnip" },
-		{ name = "nvim_lsp" },
-		{ name = "treesitter" },
-		{ name = "nvim_lsp_signature_help" },
-		--{
-		--	name = 'buffer',
-		--	option = {
-		--		get_bufnrs = function() return { vim.api.nvim_get_current_buf() } end
-		--	},
-		--},
-		{ name = "path" },
-	},
-})
-
-require("luatab").setup({})
-require("which-key").setup({})
-
-require("nvim-autopairs").setup({
-	check_ts = true,
-	ts_config = {
-		lua = { "string" },
-		javascript = { "template_string" },
-		java = false,
-	},
-})
-
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-cmp_autopairs.lisp[#cmp_autopairs.lisp + 1] = "racket"
-
-require("null-ls").setup({
-	sources = {
-		require("null-ls").builtins.formatting.prettier,
-		require("null-ls").builtins.formatting.eslint_d,
-		require("null-ls").builtins.formatting.stylua,
-	},
-	on_attach = function(client)
-		if client.resolved_capabilities.document_formatting then
-			vim.cmd([[
-			augroup LspFormatting
-				autocmd! * <buffer>
-				autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
-			augroup END
-			]])
-		end
-	end,
-})
-
-require("catppuccin").setup({
-	styles = {
-		comments = "italic",
-		functions = "italic",
-		keywords = "italic",
-		strings = "NONE",
-		variables = "italic",
-	},
-	integrations = {
-		which_key = true,
-		indent_blankline = {
-			enabled = true,
-			colored_indent_levels = true,
-		},
-		ts_rainbow = true,
-	},
-})

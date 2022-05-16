@@ -1,4 +1,3 @@
-
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
 	local hl = "DiagnosticSign" .. type
@@ -6,6 +5,7 @@ for type, icon in pairs(signs) do
 end
 
 local luasnip = require("luasnip")
+require("luasnip").filetype_extend("vimwiki", { "markdown" })
 require("luasnip.loaders.from_vscode").lazy_load()
 
 --nvim-cmp setup

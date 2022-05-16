@@ -1,25 +1,25 @@
 require("neorg").setup({
 	load = {
 		["core.defaults"] = {},
+		["core.norg.qol.toc"] = {},
+		["core.export"] = {},
 		["core.norg.dirman"] = {
 			config = {
 				workspaces = {
-					work = "~/notes/work",
-					home = "~/notes/home",
+					notes = "~/notes",
 				},
 			},
 		},
-		["core.norg.concealer"] = {},
+		["core.norg.concealer"] = {
+			config = {
+				icon_preset = "varied",
+			},
+		},
 		["core.norg.completion"] = {
 			config = {
 				engine = "nvim-cmp",
 			},
 		},
 		["core.integrations.nvim-cmp"] = {},
-		["core.gtd.base"] = {
-			config = {
-				workspace = "work",
-			},
-		},
 	},
 })

@@ -100,5 +100,6 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias n='nvim'
+alias tt='taskwarrior-tui'
 
 export PATH="$PATH:/home/corey/.local/bin:/home/corey/.cargo/bin"

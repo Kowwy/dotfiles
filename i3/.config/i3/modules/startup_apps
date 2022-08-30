@@ -11,11 +11,15 @@
 
 mouse_warping none
 
-assign [class="tidal-hifi"] 3
-assign [class="discord"] 3
+assign [class="tidal-hifi"] 8
+assign [class="discord"] 2
+assign [class="Slack"] 7
+assign [class="thunderbird"] 9
 
 no_focus [class="tidal-hifi"] 
 no_focus [class="discord"] 
+no_focus [class="Slack"]
+no_focus [class="thunderbird"]
 
 # Background Apps
 exec --no-startup-id dex --autostart --environment i3
@@ -28,5 +32,7 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 # Windowed apps #
 #################
 
-exec --no-startup-id discord
+exec --no-startup-id slack
 exec --no-startup-id tidal-hifi
+#exec --no-startup-id discord
+exec --no-startup-id thunderbird

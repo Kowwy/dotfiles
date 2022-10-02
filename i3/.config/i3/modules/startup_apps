@@ -32,7 +32,6 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 # Windowed apps #
 #################
 
-exec --no-startup-id slack
-exec --no-startup-id tidal-hifi
+#exec --no-startup-id slack
 #exec --no-startup-id discord
-exec --no-startup-id thunderbird
+#exec --no-startup-id thunderbird

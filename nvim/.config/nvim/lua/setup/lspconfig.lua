@@ -27,9 +27,9 @@ local on_attach = function(_, bufnr)
 		[[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]],
 		opts
 	)
-	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
-	_.resolved_capabilities.document_formatting = false
-	_.resolved_capabilities.document_range_formatting = false
+	-- vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
+	-- _.resolved_capabilities.document_formatting = false
+	-- _.resolved_capabilities.document_range_formatting = false
 end
 
 local lspconfig = require("lspconfig")

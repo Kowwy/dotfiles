@@ -1,16 +1,15 @@
--- require("null-ls").setup({
--- on_attach = function(client)
--- 	if client.resolved_capabilities.document_formatting then
--- 		vim.cmd([[
--- 		augroup LspFormatting
--- 			autocmd! * <buffer>
--- 			autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
--- 		augroup END
--- 		]])
--- 	end
--- end,
--- })
+local lsp_formatting = function(bufnr)
+	vim.lsp.buf.format({
+		filter = function(client)
+			-- apply whatever logic you want (in this example, we'll only use null-ls)
+			return client.name == "null-ls"
+		end,
+		bufnr = bufnr,
+	})
+end
+
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
 require("null-ls").setup({
 	-- you can reuse a shared lspconfig on_attach callback here
 	sources = {
@@ -25,9 +24,8 @@ require("null-ls").setup({
 				group = augroup,
 				buffer = bufnr,
 				callback = function()
-					-- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+					lsp_formatting(bufnr)
 					vim.lsp.buf.format({ bufnr = bufnr })
-					-- vim.lsp.buf.formatting_sync()
 				end,
 			})
 		end

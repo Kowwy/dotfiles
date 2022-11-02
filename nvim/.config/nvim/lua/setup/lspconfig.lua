@@ -29,7 +29,7 @@ local on_attach = function(client, bufnr)
 end
 
 local lspconfig = require("lspconfig")
-local servers = { "clangd", "rust_analyzer", "pyright", "tsserver", "html", "cssls" }
+local servers = { "clangd", "rust_analyzer", "pyright", "html", "cssls" }
 
 -- not sure if capabilities is still needed
 for _, lsp in ipairs(servers) do
@@ -44,6 +44,16 @@ end
 local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
+
+lspconfig.tsserver.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+	init_options = {
+		preferences = {
+			disableSuggestions = true,
+		},
+	},
+})
 
 lspconfig.sumneko_lua.setup({
 	on_attach = on_attach,

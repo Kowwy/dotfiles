@@ -38,7 +38,7 @@ vim.o.background = "dark"
 vim.cmd([[colorscheme gruvbox]])
 
 --Set completeopt to have a better completion experience
-vim.o.completeopt = "menu,menuone,noinsert,longest"
+vim.o.completeopt = "menu,menuone,noinsert,noselect"
 
 --Switch diagnosticts to float
 vim.cmd([[autocmd! CursorHold,CursorholdI * lua vim.diagnostic.open_float(nil, {focusable=false})]])

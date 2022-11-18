@@ -10,7 +10,7 @@ require("luasnip.loaders.from_vscode").lazy_load()
 
 --nvim-cmp setup
 local lspkind = require("lspkind")
-local cmp_buffer = require("cmp_buffer")
+-- local cmp_buffer = require("cmp_buffer")
 local cmp = require("cmp")
 
 cmp.setup({
@@ -50,8 +50,9 @@ cmp.setup({
 	}),
 	formatting = {
 		format = lspkind.cmp_format({
-			mode = "text_symbol",
+			mode = "symbol_text",
 			maxwidth = 50,
+			ellipsis_char = "...",
 			before = function(entry, vim_item)
 				return vim_item
 			end,
@@ -67,21 +68,25 @@ cmp.setup({
 		}),
 	},
 	sorting = {
-		--comparators = {
-		--	function (...) return cmp_buffer:compare_locality(...) end,
-		--	}
+		--[[ comparators = {
+			function(...)
+				return cmp_buffer:compare_locality(...)
+			end,
+		}, ]]
 	},
 	sources = {
-		{ name = "luasnip" },
 		{ name = "nvim_lsp" },
+		{ name = "luasnip" },
 		{ name = "treesitter" },
 		{ name = "nvim_lsp_signature_help" },
-		--{
-		--	name = 'buffer',
-		--	option = {
-		--		get_bufnrs = function() return { vim.api.nvim_get_current_buf() } end
-		--	},
-		--},
+		{
+			name = "buffer",
+			option = {
+				get_bufnrs = function()
+					return vim.api.nvim_list_bufs()
+				end,
+			},
+		},
 		{ name = "path" },
 	},
 })

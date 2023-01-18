@@ -6,7 +6,9 @@ export EDITOR=nvim
 export RANGER_LOAD_DEFAULT_RC=FALSE
 export TERMCMD=kitty
 
-startx
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+  exec startx
+fi
 
 # Created by `pipx` on 2022-03-20 20:57:44
 export PATH="$PATH:/home/corey/.local/bin"
